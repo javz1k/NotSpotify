@@ -28,38 +28,61 @@ final class AuthManager {
     }
     
     var isSignedIn: Bool {
-        return false
+        return accessToken != nil
     }
     
     private var accessToken: String? {
-        return nil
+        return UserDefaults.standard.string(forKey: "access_token")
     }
     
     private var refreshToken: String? {
-        return nil
+        return UserDefaults.standard.string(forKey: "refresh_token")
     }
     
     private var tokenExpirationDate: Date? {
-        return nil
+        return UserDefaults.standard.object(forKey: "expirationDate") as? Date
     }
     
     private var shouldRefreshToken: Bool? {
-        return false
+        guard let expirationDate = tokenExpirationDate else {return false}
+        let currentDate  = Date()
+        let fiveMin:TimeInterval = 300
+        return currentDate.addingTimeInterval(fiveMin) >= expirationDate
     }
     
     func exchangeCodeForToken(code:String,completion:@escaping((Bool) -> Void)){
         //get token
         guard let url = URL(string: Constants.tokenAPIURL) else {return}
+        
+        var components = URLComponents()
+        components.queryItems = [
+            URLQueryItem(name: "grant_type", value: "authorization_code"),
+            URLQueryItem(name: "code", value: code),
+            URLQueryItem(name: "redirect_uri", value: "https://www.google.com")
+        ]
+        let basicToken = Constants.clientId + ":" + Constants.clientSecret
+        let data = basicToken.data(using: .utf8)
+        guard let base64String = data?.base64EncodedString() else {
+            completion(false)
+            return
+        }
+        
         var request = URLRequest(url:url)
         request.httpMethod = "POST"
+        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        request.httpBody = components.query?.data(using: .utf8)
+        request.setValue("Basic \(base64String)", forHTTPHeaderField: "Authorization")
         
-       let task = URLSession.shared.dataTask(with: request) { data, _, error in
+       let task = URLSession.shared.dataTask(with: request) { [weak self] data, _, error in
             guard let data = data, error == nil else {
                 completion(false)
+                print("fail to base 64")
                 return}
            do {
-               let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
-               print("SUCCESS: \(json)")
+               let result = try JSONDecoder().decode(AuthResponseModel.self, from: data)
+               completion(true)
+               self?.cacheToken(result:result)
+               print("SUCCESS: \(result)")
            }catch{
                completion(false)
                print(error.localizedDescription)
@@ -69,8 +92,17 @@ final class AuthManager {
 
     }
     
-    func cacheToken(){
+    func cacheToken(result: AuthResponseModel){
+        UserDefaultsHelper.defaults.setValue(result.access_token, forKey: "access_token")
+        UserDefaultsHelper.defaults.setValue(result.refresh_token, forKey: "refresh_token")
+
         
+        if let expirationDate = Calendar.current.date(byAdding: .second, value: result.expires_in ?? 3600, to: Date()) {
+            UserDefaultsHelper.defaults.setValue(expirationDate, forKey: "expirationDate")
+        } else {
+            print("Failed to calculate expiration date.")
+        }
+
     }
     
     func refreshAccessToken(){

@@ -33,6 +33,7 @@
 		A4A83DF12BDAA8FC0099B5DB /* UserProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A83DF02BDAA8FC0099B5DB /* UserProfileModel.swift */; };
 		A4A83DF32BDAAA200099B5DB /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A83DF22BDAAA200099B5DB /* SearchViewController.swift */; };
 		A4A83DF52BDAAD3C0099B5DB /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A83DF42BDAAD3C0099B5DB /* AuthManager.swift */; };
+		A4A83DF72BDD061D0099B5DB /* AuthResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A83DF62BDD061D0099B5DB /* AuthResponseModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,6 +65,7 @@
 		A4A83DF02BDAA8FC0099B5DB /* UserProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileModel.swift; sourceTree = "<group>"; };
 		A4A83DF22BDAAA200099B5DB /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		A4A83DF42BDAAD3C0099B5DB /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
+		A4A83DF62BDD061D0099B5DB /* AuthResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthResponseModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +125,7 @@
 			children = (
 				A4A83DDC2BDAA7810099B5DB /* AuthViewController.swift */,
 				A4A83DF42BDAAD3C0099B5DB /* AuthManager.swift */,
+				A4A83DF62BDD061D0099B5DB /* AuthResponseModel.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -258,6 +261,7 @@
 				A4A83DF52BDAAD3C0099B5DB /* AuthManager.swift in Sources */,
 				A4A83DE32BDAA7D70099B5DB /* PlayerViewController.swift in Sources */,
 				A4A83DD12BDAA03B0099B5DB /* Extensions.swift in Sources */,
+				A4A83DF72BDD061D0099B5DB /* AuthResponseModel.swift in Sources */,
 				A4A83DCE2BDAA03B0099B5DB /* UserDefaultsHelper.swift in Sources */,
 				A4A83DED2BDAA8DA0099B5DB /* AudioTrackModel.swift in Sources */,
 				A4A83DB32BDA9F090099B5DB /* HomeViewController.swift in Sources */,
