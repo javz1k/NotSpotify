@@ -94,7 +94,10 @@ final class AuthManager {
     
     func cacheToken(result: AuthResponseModel){
         UserDefaultsHelper.defaults.setValue(result.access_token, forKey: "access_token")
-        UserDefaultsHelper.defaults.setValue(result.refresh_token, forKey: "refresh_token")
+        
+        if let refresh_token = result.refresh_token {
+            UserDefaultsHelper.defaults.setValue(refresh_token, forKey: "refresh_token")
+        }
 
         
         if let expirationDate = Calendar.current.date(byAdding: .second, value: result.expires_in ?? 3600, to: Date()) {
@@ -105,7 +108,53 @@ final class AuthManager {
 
     }
     
-    func refreshAccessToken(){
+    func refreshAccessTokenIfNeed(completion:@escaping ((Bool) -> Void)){
+        guard let shouldRefreshToken else {
+            completion(true)
+            return
+        }
+        
+        guard let refreshToken = self.refreshToken else {return}
+        
+        
+        //Get token again after 3600 seconds
+        guard let url = URL(string: Constants.tokenAPIURL) else {return}
+        
+        var components = URLComponents()
+        components.queryItems = [
+            URLQueryItem(name: "grant_type", value: "refresh_token"),
+            URLQueryItem(name: "refresh_token", value: refreshToken)
+        ]
+        let basicToken = Constants.clientId + ":" + Constants.clientSecret
+        let data = basicToken.data(using: .utf8)
+        guard let base64String = data?.base64EncodedString() else {
+            completion(false)
+            return
+        }
+        
+        var request = URLRequest(url:url)
+        request.httpMethod = "POST"
+        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        request.httpBody = components.query?.data(using: .utf8)
+        request.setValue("Basic \(base64String)", forHTTPHeaderField: "Authorization")
+        
+       let task = URLSession.shared.dataTask(with: request) { [weak self] data, _, error in
+            guard let data = data, error == nil else {
+                completion(false)
+                print("fail to base 64")
+                return}
+           do {
+               let result = try JSONDecoder().decode(AuthResponseModel.self, from: data)
+               completion(true)
+               self?.cacheToken(result:result)
+               print("SUCCESS Updated refresh token: \(result)")
+           }catch{
+               completion(false)
+               print(error.localizedDescription)
+           }
+        }
+        task.resume()
+        
         
     }
 }
