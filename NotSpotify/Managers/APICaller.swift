@@ -30,11 +30,13 @@ final class APICaller {
                 }
                 
                 do {
+//                    let result = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
                     let result = try JSONDecoder().decode(UserProfileModel.self, from: data)
+                    completion(.success(result))
                     print(result)
                 }
                 catch {
-                    print(error.localizedDescription)
+                    print("API caller getCurrentUserProfile error: \(error.localizedDescription)")
                     completion(.failure(error))
                 }
             }
