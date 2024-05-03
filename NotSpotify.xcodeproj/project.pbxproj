@@ -36,6 +36,7 @@
 		A4A83DF72BDD061D0099B5DB /* AuthResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A83DF62BDD061D0099B5DB /* AuthResponseModel.swift */; };
 		A4A83DFA2BDFEC700099B5DB /* APICaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A83DF92BDFEC700099B5DB /* APICaller.swift */; };
 		A4A83DFC2BDFEC850099B5DB /* HapticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A83DFB2BDFEC850099B5DB /* HapticsManager.swift */; };
+		A4A83DFE2BE523B00099B5DB /* SettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A83DFD2BE523B00099B5DB /* SettingModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,6 +71,7 @@
 		A4A83DF62BDD061D0099B5DB /* AuthResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthResponseModel.swift; sourceTree = "<group>"; };
 		A4A83DF92BDFEC700099B5DB /* APICaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICaller.swift; sourceTree = "<group>"; };
 		A4A83DFB2BDFEC850099B5DB /* HapticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsManager.swift; sourceTree = "<group>"; };
+		A4A83DFD2BE523B00099B5DB /* SettingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,6 +157,7 @@
 				A4A83DEC2BDAA8DA0099B5DB /* AudioTrackModel.swift */,
 				A4A83DEE2BDAA8E70099B5DB /* ArtistModel.swift */,
 				A4A83DF02BDAA8FC0099B5DB /* UserProfileModel.swift */,
+				A4A83DFD2BE523B00099B5DB /* SettingModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -283,6 +286,7 @@
 				A4A83DFC2BDFEC850099B5DB /* HapticsManager.swift in Sources */,
 				A4A83DE52BDAA7ED0099B5DB /* ProfileViewController.swift in Sources */,
 				A4A83DE12BDAA7C30099B5DB /* WelcomeViewController.swift in Sources */,
+				A4A83DFE2BE523B00099B5DB /* SettingModel.swift in Sources */,
 				A4A83DEB2BDAA8C80099B5DB /* PlaylistModel.swift in Sources */,
 				A4A83DD02BDAA03B0099B5DB /* NetworkManager.swift in Sources */,
 				A4A83DB12BDA9F090099B5DB /* SceneDelegate.swift in Sources */,

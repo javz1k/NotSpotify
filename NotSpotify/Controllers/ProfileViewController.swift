@@ -13,18 +13,38 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         title = "Profile"
-        
-        APICaller.shared.getCurrentUserProfile { result in
-            switch result {
-            case .success(let model):
-                break
-            case .failure(let error):
-                print(error.localizedDescription)
+        fetchProfile()
+       
+    }
+    
+    private func fetchProfile(){
+        APICaller.shared.getCurrentUserProfile {[weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let model):
+                    self?.updateUI(with:model)
+                case .failure(let error):
+                    self?.failedToGetProfile()
+                    print(error.localizedDescription)
+                }
             }
         }
     }
     
-
+    private func updateUI(with: UserProfileModel){
+        
+    }
+    
+    private func failedToGetProfile(){
+        let label = UILabel()
+        label.text = "Failed to load profile..."
+        label.textColor = .secondaryLabel
+        label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        label.center = view.center
+        label.numberOfLines = 0
+        view.addSubview(label)
+        label.centerInSuperview()
+    }
    
 
 }

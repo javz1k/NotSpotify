@@ -26,15 +26,15 @@ final class APICaller {
             let task = URLSession.shared.dataTask(with: baseRequest) { data, _, error in
                 guard let data = data, error == nil else {
                     completion(.failure(APIError.failedToGetData))
-                    
                     return
                 }
                 
                 do {
-                    let result = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+                    let result = try JSONDecoder().decode(UserProfileModel.self, from: data)
                     print(result)
                 }
                 catch {
+                    print(error.localizedDescription)
                     completion(.failure(error))
                 }
             }
