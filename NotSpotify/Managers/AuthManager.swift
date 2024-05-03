@@ -10,19 +10,21 @@ import Foundation
 final class AuthManager {
     static let shared = AuthManager()
     
+    private var refreshingToken = false
+    
     private init() {}
     
     struct Constants {
         static let clientId = "f0641c0e78b8488e8e848aa181e40733"
         static let clientSecret = "7959151f315b465e8f86a4aa7e4a8eb2"
         static let tokenAPIURL = "https://accounts.spotify.com/api/token"
+        static let redirectURI = "https://www.google.com"
+        static let scopes = "user-read-private%20ugc-image-upload%20playlist-read-private%20playlist-modify-private%20user-follow-read%20user-library-modify%20user-library-read%20user-read-email"
     }
     
     var signInURL: URL? {
-        let scopes = "user-read-private"
-        let redirectURI = "https://www.google.com"
         let client_id = Constants.clientId;
-        let urlString = "https://accounts.spotify.com/authorize?response_type=code&client_id=\(client_id)&scope=\(scopes)&redirect_uri=\(redirectURI)&show_dialog=TRUE"
+        let urlString = "https://accounts.spotify.com/authorize?response_type=code&client_id=\(client_id)&scope=\(Constants.scopes)&redirect_uri=\(Constants.redirectURI)&show_dialog=TRUE"
         
         return URL(string: urlString)
     }
@@ -43,7 +45,7 @@ final class AuthManager {
         return UserDefaults.standard.object(forKey: "expirationDate") as? Date
     }
     
-    private var shouldRefreshToken: Bool? {
+    private var shouldRefreshToken: Bool {
         guard let expirationDate = tokenExpirationDate else {return false}
         let currentDate  = Date()
         let fiveMin:TimeInterval = 300
@@ -105,20 +107,41 @@ final class AuthManager {
         } else {
             print("Failed to calculate expiration date.")
         }
-
     }
     
-    func refreshAccessTokenIfNeed(completion:@escaping ((Bool) -> Void)){
-        guard let shouldRefreshToken else {
-            completion(true)
+    private var onRefreshBlocks = [((String) -> Void)]()
+    
+    // suppllies using API with valid token
+    func withValidToken(completion:@escaping (String) -> Void){
+        guard !refreshingToken else {
+            onRefreshBlocks.append(completion)
             return
         }
+        if shouldRefreshToken {
+            refreshAccessTokenIfNeed { [weak self] success in
+                if let token = self?.accessToken, success {
+                    completion(token)
+                }
+            }
+            
+        }
+        else if let token = accessToken {
+            completion(token)
+        }
+    }
+    
+    
+    func refreshAccessTokenIfNeed(completion:@escaping ((Bool) -> Void)){
         
+        guard !refreshingToken else {return}
+       
         guard let refreshToken = self.refreshToken else {return}
         
         
         //Get token again after 3600 seconds
         guard let url = URL(string: Constants.tokenAPIURL) else {return}
+        
+        refreshingToken = true
         
         var components = URLComponents()
         components.queryItems = [
@@ -139,6 +162,7 @@ final class AuthManager {
         request.setValue("Basic \(base64String)", forHTTPHeaderField: "Authorization")
         
        let task = URLSession.shared.dataTask(with: request) { [weak self] data, _, error in
+           self?.refreshingToken = false
             guard let data = data, error == nil else {
                 completion(false)
                 print("fail to base 64")
@@ -146,6 +170,8 @@ final class AuthManager {
            do {
                let result = try JSONDecoder().decode(AuthResponseModel.self, from: data)
                completion(true)
+               self?.onRefreshBlocks.forEach{$0(result.access_token)}
+               self?.onRefreshBlocks.removeAll()
                self?.cacheToken(result:result)
                print("SUCCESS Updated refresh token: \(result)")
            }catch{

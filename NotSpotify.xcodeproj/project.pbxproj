@@ -34,6 +34,8 @@
 		A4A83DF32BDAAA200099B5DB /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A83DF22BDAAA200099B5DB /* SearchViewController.swift */; };
 		A4A83DF52BDAAD3C0099B5DB /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A83DF42BDAAD3C0099B5DB /* AuthManager.swift */; };
 		A4A83DF72BDD061D0099B5DB /* AuthResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A83DF62BDD061D0099B5DB /* AuthResponseModel.swift */; };
+		A4A83DFA2BDFEC700099B5DB /* APICaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A83DF92BDFEC700099B5DB /* APICaller.swift */; };
+		A4A83DFC2BDFEC850099B5DB /* HapticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A83DFB2BDFEC850099B5DB /* HapticsManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,6 +68,8 @@
 		A4A83DF22BDAAA200099B5DB /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		A4A83DF42BDAAD3C0099B5DB /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		A4A83DF62BDD061D0099B5DB /* AuthResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthResponseModel.swift; sourceTree = "<group>"; };
+		A4A83DF92BDFEC700099B5DB /* APICaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICaller.swift; sourceTree = "<group>"; };
+		A4A83DFB2BDFEC850099B5DB /* HapticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +104,7 @@
 			children = (
 				A4A83DC22BDA9F400099B5DB /* Core */,
 				A4A83DC32BDA9F580099B5DB /* Auth */,
+				A4A83DF82BDFEC320099B5DB /* Managers */,
 				A4A83DC52BDAA03B0099B5DB /* Helpers */,
 				A4A83DD22BDAA0B80099B5DB /* Models */,
 				A4A83DD52BDAA0DE0099B5DB /* Views */,
@@ -124,7 +129,6 @@
 			isa = PBXGroup;
 			children = (
 				A4A83DDC2BDAA7810099B5DB /* AuthViewController.swift */,
-				A4A83DF42BDAAD3C0099B5DB /* AuthManager.swift */,
 				A4A83DF62BDD061D0099B5DB /* AuthResponseModel.swift */,
 			);
 			path = Auth;
@@ -185,6 +189,16 @@
 				A4A83DB92BDA9F0A0099B5DB /* LaunchScreen.storyboard */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		A4A83DF82BDFEC320099B5DB /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				A4A83DF42BDAAD3C0099B5DB /* AuthManager.swift */,
+				A4A83DF92BDFEC700099B5DB /* APICaller.swift */,
+				A4A83DFB2BDFEC850099B5DB /* HapticsManager.swift */,
+			);
+			path = Managers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -266,12 +280,14 @@
 				A4A83DED2BDAA8DA0099B5DB /* AudioTrackModel.swift in Sources */,
 				A4A83DB32BDA9F090099B5DB /* HomeViewController.swift in Sources */,
 				A4A83DAF2BDA9F090099B5DB /* AppDelegate.swift in Sources */,
+				A4A83DFC2BDFEC850099B5DB /* HapticsManager.swift in Sources */,
 				A4A83DE52BDAA7ED0099B5DB /* ProfileViewController.swift in Sources */,
 				A4A83DE12BDAA7C30099B5DB /* WelcomeViewController.swift in Sources */,
 				A4A83DEB2BDAA8C80099B5DB /* PlaylistModel.swift in Sources */,
 				A4A83DD02BDAA03B0099B5DB /* NetworkManager.swift in Sources */,
 				A4A83DB12BDA9F090099B5DB /* SceneDelegate.swift in Sources */,
 				A4A83DDD2BDAA7810099B5DB /* AuthViewController.swift in Sources */,
+				A4A83DFA2BDFEC700099B5DB /* APICaller.swift in Sources */,
 				A4A83DF32BDAAA200099B5DB /* SearchViewController.swift in Sources */,
 				A4A83DE92BDAA8260099B5DB /* SearchResultsViewController.swift in Sources */,
 				A4A83DDF2BDAA7B20099B5DB /* SettingsViewController.swift in Sources */,
