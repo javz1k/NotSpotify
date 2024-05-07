@@ -44,6 +44,51 @@ final class APICaller {
         }
     }
     
+    
+    public func getNewReleases(completion:@escaping((Result<NewReleasesResponseModel, Error>) -> Void)){
+        createRequest(with: URL(string: Constants.baseAPIUrl + "/browse/new-releases?limit=50"), type: .Get) { request in
+            let task = URLSession.shared.dataTask(with: request) { data, _, error in
+                guard let data = data, error == nil else {
+                    completion(.failure(APIError.failedToGetData))
+                    return
+                }
+                
+                do{
+//                    let json = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
+                    let result = try JSONDecoder().decode(NewReleasesResponseModel.self, from: data)
+                    completion(.success(result))
+//                    print(result)
+                }
+                catch{
+                    completion(.failure(error))
+                }
+            }
+            task.resume()
+        }
+    }
+    
+    public func getFeaturedPlaylists(completion:@escaping((Result<FeaturedPlaylistResponseModel, Error>) -> Void)){
+        createRequest(with: URL(string: Constants.baseAPIUrl + "/browse/featured-playlists"), type: .Get) { request in
+            let task = URLSession.shared.dataTask(with: request) { data, _, error in
+                guard let data = data, error == nil else {
+                    completion(.failure(APIError.failedToGetData))
+                    return
+                }
+                
+                do{
+//                    let json = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
+                    let result = try JSONDecoder().decode(FeaturedPlaylistResponseModel.self, from: data)
+                    completion(.success(result))
+                    print(result)
+                }
+                catch{
+                    completion(.failure(error))
+                }
+            }
+            task.resume()
+        }
+    }
+    
     enum HTTPMethod: String {
         case Get
         case Post
