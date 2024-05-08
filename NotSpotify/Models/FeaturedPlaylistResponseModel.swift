@@ -12,17 +12,9 @@ struct FeaturedPlaylistResponseModel: Codable {
 }
 
 struct PlaylistResponse: Codable {
-    let items: [Playlist]
+    let items: [PlaylistModel]
 }
 
-struct Playlist: Codable {
-    let description:String
-    let external_urls: [String:String]
-    let id: String
-    let images: [APIImageModel]
-    let name: String
-    let owner:User
-}
 
 struct User: Codable {
     let display_name: String

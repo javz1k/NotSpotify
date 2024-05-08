@@ -13,3 +13,5 @@ struct ArtistModel: Codable {
     let type: String
     let external_urls: [String: String]
 }
+
+

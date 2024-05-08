@@ -6,3 +6,12 @@
 //
 
 import Foundation
+
+struct PlaylistModel: Codable {
+    let description:String
+    let external_urls: [String:String]
+    let id: String
+    let images: [APIImageModel]
+    let name: String
+    let owner:User
+}
