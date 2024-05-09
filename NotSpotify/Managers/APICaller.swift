@@ -33,7 +33,6 @@ final class APICaller {
 //                    let result = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
                     let result = try JSONDecoder().decode(UserProfileModel.self, from: data)
                     completion(.success(result))
-                    print(result)
                 }
                 catch {
                     print("API caller getCurrentUserProfile error: \(error.localizedDescription)")
@@ -57,7 +56,6 @@ final class APICaller {
 //                    let json = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
                     let result = try JSONDecoder().decode(NewReleasesResponseModel.self, from: data)
                     completion(.success(result))
-//                    print(result)
                 }
                 catch{
                     completion(.failure(error))
@@ -105,8 +103,7 @@ final class APICaller {
                 do {
 //                    let json = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
                     let result = try JSONDecoder().decode(Recomendations.self, from: data)
-                    print("response: \(result)")
-                    print(result)
+                    completion(.success(result))
                     
                 }
                 catch {
@@ -131,7 +128,6 @@ final class APICaller {
 //                    let json = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
                     let result = try JSONDecoder().decode(RecommendedGenreResponseModel.self, from: data)
                     completion(.success(result))
-//                    print(result)
                 }
                 catch{
                     completion(.failure(error))
