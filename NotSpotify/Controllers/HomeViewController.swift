@@ -9,8 +9,8 @@ import UIKit
 
 enum SectionType{
     case newReleases(viewModels:[NewReleaseCellViewModel]) // 1
-    case featuredPlaylists(viewModels:[NewReleaseCellViewModel]) // 2
-    case recommendedTracks(viewModels:[NewReleaseCellViewModel]) // 3
+    case featuredPlaylists(viewModels:[FeaturedPlaylistCellViewModel]) // 2
+    case recommendedTracks(viewModels:[RecommendedTrackCellViewModel]) // 3
 }
 
 class HomeViewController: UIViewController {
@@ -48,6 +48,7 @@ class HomeViewController: UIViewController {
     
     private func configureCollectionView(){
         view.addSubview(collectionView)
+        
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.register(NewReleaseCollectionViewCell.self,
                                 forCellWithReuseIdentifier: NewReleaseCollectionViewCell.identifier)
@@ -151,8 +152,17 @@ class HomeViewController: UIViewController {
                                            artistName:$0.artists.first?.name ?? "-"
             )
         })))
-        sections.append(.featuredPlaylists(viewModels: []))
-        sections.append(.recommendedTracks(viewModels: []))
+        sections.append(.featuredPlaylists(viewModels: playlists.compactMap({
+            return FeaturedPlaylistCellViewModel(name: $0.name,
+                                                 artWorkUrl: URL(string: $0.images.first?.url ?? ""),
+                                                 creatorName: $0.owner.display_name
+            )
+        })))
+        sections.append(.recommendedTracks(viewModels: tracks.compactMap({
+            return RecommendedTrackCellViewModel(name: $0.name,
+                                                 artistName: $0.artists.first?.name ?? "-",
+                                                 artWorkUrl: URL(string: $0.album.images.first?.url ?? ""))
+        })))
         collectionView.reloadData()
     }
 
@@ -163,10 +173,6 @@ class HomeViewController: UIViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
 }
-
-
-
-
 
 
 
@@ -206,7 +212,9 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                  for: indexPath) as? FeaturedPlaylistCollectionViewCell else {
                 return UICollectionViewCell()
             }
-             cell.backgroundColor = .yellow
+            let viewModel = viewModels[indexPath.row]
+            cell.configure(with:viewModel)
+            
              return cell
             
         case .recommendedTracks(viewModels: let viewModels):
@@ -215,21 +223,11 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                  for: indexPath) as? RecommendedTrackCollectionViewCell else {
                 return UICollectionViewCell()
             }
-             cell.backgroundColor = .blue
-             return cell
+            let viewModel = viewModels[indexPath.row]
+            cell.configure(with: viewModel)
+            return cell
         }
 
-        
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
-//        cell.backgroundColor = .systemGreen
-//        if indexPath.section == 0{
-//            cell.backgroundColor = .systemRed
-//        }else if indexPath.section == 1{
-//            cell.backgroundColor = .systemBlue
-//        }else if indexPath.section == 2{
-//            cell.backgroundColor = .systemBrown
-//        }
-//        return cell
     }
     
     static func createSectionLayout(section:Int) -> NSCollectionLayoutSection {
@@ -275,7 +273,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                                                                        widthDimension: .absolute(200),
                                                                        heightDimension: .absolute(400)),
                                                                        subitem: item,
-                                                                       count: 3)
+                                                                       count: 2)
                
                // Horizontal group containing vertical groups
                let horizontalGroup = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(
