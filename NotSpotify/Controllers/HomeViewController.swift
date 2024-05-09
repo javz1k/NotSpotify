@@ -83,7 +83,7 @@ class HomeViewController: UIViewController {
             
         case 1:
             // Item
-               let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+               let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(200), heightDimension: .absolute(200))
                let item = NSCollectionLayoutItem(layoutSize: itemSize)
                
                // Spacing between items
@@ -91,21 +91,21 @@ class HomeViewController: UIViewController {
                
                // Vertical group containing items
                let verticalGroup = NSCollectionLayoutGroup.vertical(layoutSize: NSCollectionLayoutSize(
-                                                                       widthDimension: .fractionalWidth(1.0),
-                                                                       heightDimension: .absolute(390)),
+                                                                       widthDimension: .absolute(200),
+                                                                       heightDimension: .absolute(400)),
                                                                        subitem: item,
                                                                        count: 3)
                
                // Horizontal group containing vertical groups
                let horizontalGroup = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(
-                                                                           widthDimension: .fractionalWidth(0.9),
-                                                                           heightDimension: .absolute(390)),
+                                                                           widthDimension: .absolute(200),
+                                                                           heightDimension: .absolute(400)),
                                                                            subitem: verticalGroup,
                                                                            count: 1)
                
                // Section
                let section = NSCollectionLayoutSection(group: horizontalGroup)
-               section.orthogonalScrollingBehavior = .groupPaging // Enable horizontal paging
+               section.orthogonalScrollingBehavior = .continuous // Enable horizontal paging
                
                return section
             
@@ -118,23 +118,16 @@ class HomeViewController: UIViewController {
                item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2)
                
                // Vertical group containing items
-               let verticalGroup = NSCollectionLayoutGroup.vertical(layoutSize: NSCollectionLayoutSize(
+               let group = NSCollectionLayoutGroup.vertical(layoutSize: NSCollectionLayoutSize(
                                                                        widthDimension: .fractionalWidth(1.0),
-                                                                       heightDimension: .absolute(390)),
+                                                                       heightDimension: .absolute(80)),
                                                                        subitem: item,
-                                                                       count: 3)
+                                                                       count: 1)
                
-               // Horizontal group containing vertical groups
-               let horizontalGroup = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(
-                                                                           widthDimension: .fractionalWidth(0.9),
-                                                                           heightDimension: .absolute(390)),
-                                                                           subitem: verticalGroup,
-                                                                           count: 1)
+              
                
                // Section
-               let section = NSCollectionLayoutSection(group: horizontalGroup)
-               section.orthogonalScrollingBehavior = .groupPaging // Enable horizontal paging
-               
+               let section = NSCollectionLayoutSection(group: group)
                return section
             
         default:
@@ -194,7 +187,7 @@ class HomeViewController: UIViewController {
 
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 6
+        return 8
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
