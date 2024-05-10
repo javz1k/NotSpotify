@@ -15,6 +15,10 @@ enum SectionType{
 
 class HomeViewController: UIViewController {
     
+    private var newAlbums:[Album] = []
+    private var playlists:[PlaylistModel] = []
+    private var tracks:[Track] = []
+    
     private lazy var collectionView : UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewCompositionalLayout { sectionIndex, _ -> NSCollectionLayoutSection in
             return HomeViewController.createSectionLayout(section: sectionIndex)
     })
@@ -128,7 +132,7 @@ class HomeViewController: UIViewController {
                 print("models are nil")
                 return
             }
-            print("configuring view models")
+//            print("configuring view models")
             self.configureModels(
                 newAlbums: releases,
                 playlists: playlists,
@@ -136,14 +140,21 @@ class HomeViewController: UIViewController {
         }
      }
     
+       
+    
+    
     private func configureModels(
         newAlbums:[Album],
         playlists:[PlaylistModel],
         tracks:[Track]
     ){
-        print(newAlbums.count)
-        print(playlists.count)
-        print(tracks.count)
+        
+        self.newAlbums = newAlbums
+        self.playlists = playlists
+        self.tracks = tracks
+//        print(newAlbums.count)
+//        print(playlists.count)
+//        print(tracks.count)
         // Configure models
         sections.append(.newReleases(viewModels: newAlbums.compactMap({
             return NewReleaseCellViewModel(name: $0.name,
@@ -177,6 +188,28 @@ class HomeViewController: UIViewController {
 
 
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        let section = sections[indexPath.section]
+        switch section{
+        case .newReleases:
+            let album = newAlbums[indexPath.row]
+            let vc = AlbumViewController(album: album)
+            vc.title = album.name
+            vc.navigationItem.largeTitleDisplayMode = .never
+            navigationController?.pushViewController(vc, animated: true)
+        case .featuredPlaylists:
+            let playlist = playlists[indexPath.row]
+            let vc = PlaylistViewController(playlist:playlist)
+            vc.title = playlist.name
+            vc.navigationItem.largeTitleDisplayMode = .never
+            navigationController?.pushViewController(vc, animated: true)
+        case .recommendedTracks:
+            break
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let type = sections[section]
         switch type {

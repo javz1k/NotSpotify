@@ -19,6 +19,54 @@ final class APICaller {
         case failedToGetData
     }
     
+    //Albums
+    public func getAlbumDetails(for album: Album, completion: @escaping (Result<AlbumDetailResponseModel, Error>) -> Void){
+        createRequest(
+            with: URL(string: Constants.baseAPIUrl + "/albums/" + album.id),
+            type: .Get
+        ) { request in
+            let task = URLSession.shared.dataTask(with: request) { data, _, error in
+                guard let data = data, error == nil else {
+                    completion(.failure(APIError.failedToGetData))
+                    return
+                }
+                do{
+                    let result = try JSONDecoder().decode(AlbumDetailResponseModel.self, from: data)
+                    completion(.success(result))
+                    print(result)
+                }
+                catch{
+                    print(error.localizedDescription)
+                }
+            }
+            task.resume()
+        }
+    }
+    
+    //Playlist
+    public func getPlaylistDetails(for playlist: PlaylistModel, completion: @escaping (Result<PlaylistDetailResponseModel, Error>) -> Void){
+        createRequest(
+            with: URL(string: Constants.baseAPIUrl + "/playlists/" + playlist.id),
+            type: .Get
+        ) { request in
+            let task = URLSession.shared.dataTask(with: request) { data, _, error in
+                guard let data = data, error == nil else {
+                    completion(.failure(APIError.failedToGetData))
+                    return
+                }
+                do{
+                    let result = try JSONDecoder().decode(PlaylistDetailResponseModel.self, from: data)
+                    completion(.success(result))
+                }
+                catch{
+                    print(error.localizedDescription)
+                }
+            }
+            task.resume()
+        }
+    }
+
+    
     public func getCurrentUserProfile(completion:@escaping((Result<UserProfileModel, Error>) -> Void)){
         createRequest(with: URL(string: Constants.baseAPIUrl + "/me"),
                       type: .Get
@@ -53,7 +101,6 @@ final class APICaller {
                 }
                 
                 do{
-//                    let json = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
                     let result = try JSONDecoder().decode(NewReleasesResponseModel.self, from: data)
                     completion(.success(result))
                 }
@@ -74,7 +121,6 @@ final class APICaller {
                 }
                 
                 do{
-//                    let json = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
                     let result = try JSONDecoder().decode(FeaturedPlaylistResponseModel.self, from: data)
                     completion(.success(result))
                 }
