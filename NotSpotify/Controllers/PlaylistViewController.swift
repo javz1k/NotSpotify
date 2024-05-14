@@ -19,6 +19,7 @@ class PlaylistViewController: UIViewController {
                let itemSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
                 heightDimension: .fractionalHeight(1.0))
+            
                let item = NSCollectionLayoutItem(layoutSize: itemSize)
                
                // Spacing between items
@@ -43,7 +44,7 @@ class PlaylistViewController: UIViewController {
             NSCollectionLayoutBoundarySupplementaryItem(
                 layoutSize: NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1),
-                    heightDimension: .fractionalHeight(0.5)
+                    heightDimension: .fractionalHeight(0.6)
                 ),
                 elementKind: UICollectionView.elementKindSectionHeader,
                 alignment: .top)
@@ -99,12 +100,27 @@ class PlaylistViewController: UIViewController {
                 }
             }
         }
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(didTapShare))
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         collectionView.frame = view.bounds
     }
+    
+    @objc func didTapShare(){
+        print("external urls\(playlist.external_urls)")
+        guard let url = URL(string: playlist.external_urls["spotify"] ?? "") else {
+            return
+        }
+        let vc = UIActivityViewController(
+            activityItems: ["Check out this playlist!", url],
+            applicationActivities: [])
+        vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+        present(vc, animated:true)
+    }
+    
 
 }
 
@@ -153,7 +169,16 @@ extension PlaylistViewController: UICollectionViewDelegate, UICollectionViewData
             )
             
         header.configure(with:headerViewModel)
+        header.delegate = self
         return header
+    }
+    
+    
+}
+
+extension PlaylistViewController: PlaylistHeaderCollectionReusableViewDelegate{
+    func PlaylistHeaderCollectionReusableViewDidTapPlayAll(_ header: PlaylistHeaderCollectionReusableView) {
+        print("playing all")
     }
     
     

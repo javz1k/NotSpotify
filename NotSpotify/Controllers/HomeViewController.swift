@@ -155,6 +155,7 @@ class HomeViewController: UIViewController {
 //        print(newAlbums.count)
 //        print(playlists.count)
 //        print(tracks.count)
+        
         // Configure models
         sections.append(.newReleases(viewModels: newAlbums.compactMap({
             return NewReleaseCellViewModel(name: $0.name,
@@ -330,11 +331,11 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2)
                
                // Vertical group containing items
-               let group = NSCollectionLayoutGroup.vertical(layoutSize: NSCollectionLayoutSize(
-                                                                       widthDimension: .fractionalWidth(1.0),
-                                                                       heightDimension: .absolute(80)),
-                                                                       subitem: item,
-                                                                       count: 1)
+                let group = NSCollectionLayoutGroup.vertical(layoutSize: NSCollectionLayoutSize(
+                                                               widthDimension: .fractionalWidth(1.0),
+                                                               heightDimension: .absolute(80)),
+                                                               subitems: [item])
+
                
               
                
