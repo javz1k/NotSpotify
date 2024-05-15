@@ -27,19 +27,32 @@ class SearchViewController: UIViewController, UISearchResultsUpdating {
                     widthDimension: .fractionalWidth(1),
                     heightDimension: .fractionalHeight(1)))
             
-            let group = NSCollectionLayoutGroup.horizontal(
-                layoutSize: NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(1),
-                    heightDimension: .absolute(180)
-                ),
-                subitems: [item, item]
+            item.contentInsets = NSDirectionalEdgeInsets(
+                top: 2,
+                leading: 2,
+                bottom: 2,
+                trailing: 2
+            )
+            
+            let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(
+                                                                    widthDimension: .fractionalWidth(1),
+                                                                    heightDimension: .absolute(180)),
+                                                                    subitem: item,
+                                                                    count: 2)
+            
+            
+            group.contentInsets = NSDirectionalEdgeInsets(
+                top: 2,
+                leading: 2,
+                bottom: 2,
+                trailing: 2
             )
             
             let section = NSCollectionLayoutSection(group: group)
             return section
         }))
     
-
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -50,6 +63,10 @@ class SearchViewController: UIViewController, UISearchResultsUpdating {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.backgroundColor = .systemBackground
+        collectionView.register(
+            GenreCollectionViewCell.self,
+            forCellWithReuseIdentifier: GenreCollectionViewCell.identifier
+        )
     }
     
     override func viewDidLayoutSubviews() {
@@ -81,10 +98,13 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
-        cell.backgroundColor = .cyan
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: GenreCollectionViewCell.identifier,
+            for: indexPath
+        ) as? GenreCollectionViewCell else {return UICollectionViewCell()}
+        cell.configure(with: "Phonk")
+        cell.backgroundColor = .systemPink
         return cell
     }
-    
     
 }
