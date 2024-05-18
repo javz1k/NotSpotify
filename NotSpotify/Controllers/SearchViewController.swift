@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SearchViewController: UIViewController, UISearchResultsUpdating {
+class SearchViewController: UIViewController, UISearchResultsUpdating, UISearchBarDelegate {
     
     private var categories = [Category]()
     
@@ -52,12 +52,30 @@ class SearchViewController: UIViewController, UISearchResultsUpdating {
             return section
         }))
     
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let resultsController = searchController.searchResultsController as? SearchResultsViewController,
+              let query = searchController.searchBar.text,
+              !query.trimmingCharacters(in: .whitespaces).isEmpty else {
+            return
+        }
+        
+        APICaller.shared.searchFromInput(with: query) { result in
+            switch result{
+            case .success(let searchResults):
+                break
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         title = "Search"
         searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
         navigationItem.searchController = searchController
         view.addSubview(collectionView)
         collectionView.delegate = self
@@ -88,15 +106,6 @@ class SearchViewController: UIViewController, UISearchResultsUpdating {
     }
     
     func updateSearchResults(for searchController: UISearchController) {
-        guard let resultsController = searchController.searchResultsController as? SearchResultsViewController,
-              let query = searchController.searchBar.text,
-              !query.trimmingCharacters(in: .whitespaces).isEmpty else {
-            return
-        }
-        print(query)
-//        resultsController.update(with: results)
-        //perform search
-//        APICaller.shared.search
     }
     
    

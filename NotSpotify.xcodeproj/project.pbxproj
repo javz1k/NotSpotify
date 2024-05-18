@@ -14,6 +14,7 @@
 		A47ED7EC2BF8C786001692C4 /* AllCotegoriesResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47ED7EB2BF8C786001692C4 /* AllCotegoriesResponseModel.swift */; };
 		A47ED7EE2BF8D96D001692C4 /* CategoryCollectionViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47ED7ED2BF8D96D001692C4 /* CategoryCollectionViewCellViewModel.swift */; };
 		A47ED7F02BF8DED8001692C4 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47ED7EF2BF8DED8001692C4 /* CategoryViewController.swift */; };
+		A47ED7F22BF91263001692C4 /* SearchResultsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47ED7F12BF91263001692C4 /* SearchResultsResponse.swift */; };
 		A4A83DAF2BDA9F090099B5DB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A83DAE2BDA9F090099B5DB /* AppDelegate.swift */; };
 		A4A83DB12BDA9F090099B5DB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A83DB02BDA9F090099B5DB /* SceneDelegate.swift */; };
 		A4A83DB32BDA9F090099B5DB /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A83DB22BDA9F090099B5DB /* HomeViewController.swift */; };
@@ -72,6 +73,7 @@
 		A47ED7EB2BF8C786001692C4 /* AllCotegoriesResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllCotegoriesResponseModel.swift; sourceTree = "<group>"; };
 		A47ED7ED2BF8D96D001692C4 /* CategoryCollectionViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionViewCellViewModel.swift; sourceTree = "<group>"; };
 		A47ED7EF2BF8DED8001692C4 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
+		A47ED7F12BF91263001692C4 /* SearchResultsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsResponse.swift; sourceTree = "<group>"; };
 		A4A83DAB2BDA9F090099B5DB /* NotSpotify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NotSpotify.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4A83DAE2BDA9F090099B5DB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A4A83DB02BDA9F090099B5DB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -216,6 +218,7 @@
 				A4A83E212BEE45960099B5DB /* AlbumDetailResponseModel.swift */,
 				A4A83E232BEE4BEE0099B5DB /* PlaylistDetailResponseModel.swift */,
 				A47ED7EB2BF8C786001692C4 /* AllCotegoriesResponseModel.swift */,
+				A47ED7F12BF91263001692C4 /* SearchResultsResponse.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -407,6 +410,7 @@
 				A4A83DCD2BDAA03B0099B5DB /* KeychainHelper.swift in Sources */,
 				A4A83DEF2BDAA8E70099B5DB /* ArtistModel.swift in Sources */,
 				A4A83DE72BDAA7F90099B5DB /* PlaylistViewController.swift in Sources */,
+				A47ED7F22BF91263001692C4 /* SearchResultsResponse.swift in Sources */,
 				A4A83E142BED18BB0099B5DB /* NewReleaseCollectionViewCell.swift in Sources */,
 				A4A83DD72BDAA6D90099B5DB /* TabBarViewController.swift in Sources */,
 				A4A83E202BEE3B300099B5DB /* AlbumViewController.swift in Sources */,
