@@ -1,19 +1,22 @@
 //
-//  GenreCollectionViewCell.swift
+//  CategoryCollectionViewCell.swift
 //  NotSpotify
 //
 //  Created by Cavidan Mustafayev on 15.05.24.
 //
 
 import UIKit
+import SDWebImage
 
-class GenreCollectionViewCell: UICollectionViewCell {
-    static let identifier = "GenreCollectionViewCell"
+class CategoryCollectionViewCell: UICollectionViewCell {
+    static let identifier = "CategoryCollectionViewCell"
     
-    private lazy var imageView:UIImageView = {
+    private lazy var imageView: UIImageView = {
        let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.tintColor = .white
+        imageView.layer.cornerRadius = 4
+        imageView.clipsToBounds = true
         imageView.image = UIImage(systemName: "music.quarternote.3", withConfiguration: UIImage.SymbolConfiguration(
             pointSize: 40,
             weight: .regular) )
@@ -42,25 +45,42 @@ class GenreCollectionViewCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         label.text = nil
+        imageView.image = UIImage(systemName: "music.quarternote.3", withConfiguration: UIImage.SymbolConfiguration(
+            pointSize: 40,
+            weight: .regular))
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         label.frame = CGRect(x: 10,
-                             y: contentView.frame.height/2,
+                             y: contentView.frame.height/2 + 15,
                              width: contentView.frame.width-20,
                              height: contentView.frame.height/2
         )
         
-        imageView.frame = CGRect(x: contentView.frame.width/2,
-                                 y: 0,
+        imageView.frame = CGRect(x: contentView.frame.width/2 - 20,
+                                 y: 20,
                                  width: contentView.frame.width/2,
                                  height: contentView.frame.height/2
         )
         
     }
+    private var colors: [UIColor] = [
+        .systemPink,
+        .systemBlue,
+        .systemGreen,
+        .systemRed,
+        .systemOrange,
+        .systemTeal,
+        .systemYellow,
+        .systemGray,
+        .systemBrown,
+        .systemMint
+    ]
     
-    func configure(with title: String){
-        label.text = title
+    func configure(with data: CategoryCollectionViewCellViewModel){
+        label.text = data.title
+        imageView.sd_setImage(with: data.artworkUrl, completed: nil)
+        contentView.backgroundColor = colors.randomElement()
     }
 }

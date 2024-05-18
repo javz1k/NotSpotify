@@ -184,6 +184,54 @@ final class APICaller {
         }
     }
     
+    public func getCategory(completion:@escaping((Result<[Category], Error>) -> Void)){
+        createRequest(with: URL(string: Constants.baseAPIUrl + "/browse/categories?limit=50"),
+                      type: .Get) { request in
+            let task = URLSession.shared.dataTask(
+                with: request) { data, _, error in
+                    guard let data = data, error == nil else {
+                        completion(.failure(APIError.failedToGetData))
+                        return
+                    }
+                    
+                    do{
+                        let result = try JSONDecoder().decode(AllCotegoriesResponseModel.self, from: data)
+                        completion(.success(result.categories.items))
+                    }
+                    catch{
+                        completion(.failure(error))
+                    }
+                }
+            
+            task.resume()
+        }
+    }
+    
+    public func getCategoryPlaylistsSingle(category: Category,completion:@escaping((Result<[PlaylistModel], Error>) -> Void)){
+        createRequest(with: URL(string: Constants.baseAPIUrl + "/browse/categories/\(category.id)/playlists?limit=50"),
+                      type: .Get) { request in
+            let task = URLSession.shared.dataTask(
+                with: request) { data, _, error in
+                    guard let data = data, error == nil else {
+                        completion(.failure(APIError.failedToGetData))
+                        return
+                    }
+                    do{
+                        let result = try JSONDecoder().decode(FeaturedPlaylistResponseModel.self, from: data)
+                        let playlist = result.playlists.items
+                        completion(.success(playlist))
+                    }
+                    catch{
+                        completion(.failure(error))
+                        print(error.localizedDescription)
+                    }
+                }
+            
+            task.resume()
+        }
+    }
+    
+    
     enum HTTPMethod: String {
         case Get
         case Post

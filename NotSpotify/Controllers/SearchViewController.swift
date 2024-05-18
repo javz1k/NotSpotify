@@ -9,7 +9,7 @@ import UIKit
 
 class SearchViewController: UIViewController, UISearchResultsUpdating {
     
-  
+    private var categories = [Category]()
     
     private lazy var searchController: UISearchController = {
         let vc = UISearchController(searchResultsController: SearchResultsViewController())
@@ -29,22 +29,22 @@ class SearchViewController: UIViewController, UISearchResultsUpdating {
             
             item.contentInsets = NSDirectionalEdgeInsets(
                 top: 2,
-                leading: 2,
+                leading: 8,
                 bottom: 2,
-                trailing: 2
+                trailing: 8
             )
             
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(
                                                                     widthDimension: .fractionalWidth(1),
-                                                                    heightDimension: .absolute(180)),
+                                                                    heightDimension: .absolute(170)),
                                                                     subitem: item,
                                                                     count: 2)
             
             
             group.contentInsets = NSDirectionalEdgeInsets(
-                top: 2,
+                top: 8,
                 leading: 2,
-                bottom: 2,
+                bottom: 8,
                 trailing: 2
             )
             
@@ -64,9 +64,22 @@ class SearchViewController: UIViewController, UISearchResultsUpdating {
         collectionView.dataSource = self
         collectionView.backgroundColor = .systemBackground
         collectionView.register(
-            GenreCollectionViewCell.self,
-            forCellWithReuseIdentifier: GenreCollectionViewCell.identifier
+            CategoryCollectionViewCell.self,
+            forCellWithReuseIdentifier: CategoryCollectionViewCell.identifier
         )
+        
+        APICaller.shared.getCategory {[weak self] result in
+            DispatchQueue.main.async{
+                switch result{
+                case .success(let model):
+                    self?.categories = model
+                    self?.collectionView.reloadData()
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+
+            }
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -85,6 +98,8 @@ class SearchViewController: UIViewController, UISearchResultsUpdating {
         //perform search
 //        APICaller.shared.search
     }
+    
+   
 }
 
 extension SearchViewController: UICollectionViewDataSource, UICollectionViewDelegate{
@@ -93,18 +108,28 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        20
+        categories.count
     }
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: GenreCollectionViewCell.identifier,
+            withReuseIdentifier: CategoryCollectionViewCell.identifier,
             for: indexPath
-        ) as? GenreCollectionViewCell else {return UICollectionViewCell()}
-        cell.configure(with: "Phonk")
-        cell.backgroundColor = .systemPink
+        ) as? CategoryCollectionViewCell else {return UICollectionViewCell()}
+        let category = categories[indexPath.row]
+        cell.configure(with: CategoryCollectionViewCellViewModel(
+            title: category.name,
+            artworkUrl: URL(string: category.icons.first?.url ?? "")))
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        let category = categories[indexPath.row]
+        let vc = CategoryViewController(category: category)
+        vc.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(vc, animated: true)
     }
     
 }
