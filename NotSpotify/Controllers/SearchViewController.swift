@@ -11,6 +11,7 @@ class SearchViewController: UIViewController, UISearchResultsUpdating, UISearchB
     
     private var categories = [Category]()
     
+    
     private lazy var searchController: UISearchController = {
         let vc = UISearchController(searchResultsController: SearchResultsViewController())
         vc.searchBar.placeholder = "Songs, Artists, Albums"
@@ -59,12 +60,16 @@ class SearchViewController: UIViewController, UISearchResultsUpdating, UISearchB
             return
         }
         
+        resultsController.delegate = self
+        
         APICaller.shared.searchFromInput(with: query) { result in
-            switch result{
-            case .success(let searchResults):
-                break
-            case .failure(let error):
-                print(error.localizedDescription)
+            DispatchQueue.main.async{
+                switch result{
+                case .success(let searchResults):
+                    resultsController.update(with: searchResults)
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
             }
         }
     }
@@ -109,6 +114,27 @@ class SearchViewController: UIViewController, UISearchResultsUpdating, UISearchB
     }
     
    
+}
+
+extension SearchViewController: SearchResultsViewControllerDelegate {
+    func didTapResults(_ result: SearchResult) {
+        switch result{
+        case .artist(model: let model):
+            break
+        case .album(model: let model):
+            let vc = AlbumViewController(album: model)
+            navigationController?.pushViewController(vc, animated: true)
+        case .track(model: let model):
+            break
+        case .playlist(model: let model):
+            let vc = PlaylistViewController(playlist: model)
+            navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+    
+    
+    
+    
 }
 
 extension SearchViewController: UICollectionViewDataSource, UICollectionViewDelegate{
