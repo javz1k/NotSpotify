@@ -161,7 +161,8 @@ class HomeViewController: UIViewController {
             self.configureModels(
                 newAlbums: releases,
                 playlists: playlists,
-                tracks: tracks)
+                tracks: tracks
+            )
         }
      }
     
@@ -232,7 +233,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             vc.navigationItem.largeTitleDisplayMode = .never
             navigationController?.pushViewController(vc, animated: true)
         case .recommendedTracks:
-            break
+            let track = tracks[indexPath.row]
+            PlaybackPresenter.shared.startPlayback(from: self, tracksTrack: track)
         }
     }
     
