@@ -163,8 +163,12 @@ extension AlbumViewController: UICollectionViewDelegate, UICollectionViewDataSou
 
 extension AlbumViewController: PlaylistHeaderCollectionReusableViewDelegate{
     func PlaylistHeaderCollectionReusableViewDidTapPlayAll(_ header: PlaylistHeaderCollectionReusableView) {
-        print("playing all")
-        PlaybackPresenter.shared.startPlayback(from: self, tracks: tracks)
+        var tracksWithAlbum: [AudioTrackModel] = tracks.compactMap({
+            var track = $0
+            track.album = self.album
+            return track
+        })
+        PlaybackPresenter.shared.startPlayback(from: self, tracks: tracksWithAlbum)
     }
     
 }

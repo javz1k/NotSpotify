@@ -12,10 +12,17 @@ protocol PlayerControlsViewDelegate: AnyObject {
     func PlayerControlsViewDidTapPlayPause(_ PlayerControlsView: PlayerControlsView)
     func PlayerControlsViewDidTapBack(_ PlayerControlsView: PlayerControlsView)
     func PlayerControlsViewDidTapForward(_ PlayerControlsView: PlayerControlsView)
+    func PlayerControlsView(_ PlayerControlsView: PlayerControlsView, didSlideSlider value: Float)
+}
+
+struct PlayerControlsViewDTO {
+    let title: String?
+    let subTitile: String?
 }
 
 final class PlayerControlsView: UIView {
     
+    private var isPlaying = true
     weak var delegate:PlayerControlsViewDelegate?
     
     private let volumeSlider: UISlider = {
@@ -98,7 +105,7 @@ final class PlayerControlsView: UIView {
         addSubview(playPauseButton)
         addSubview(backButton)
         addSubview(forwardButton)
-        
+        volumeSlider.addTarget(self, action: #selector(didSlideSlider), for: .valueChanged)
         backButton.addTarget(self, action: #selector(didTapBack), for: .touchUpInside)
         forwardButton.addTarget(self, action: #selector(didTapForward), for: .touchUpInside)
         playPauseButton.addTarget(self, action: #selector(didTapPlayPause), for: .touchUpInside)
@@ -140,6 +147,10 @@ final class PlayerControlsView: UIView {
         
     }
     
+    @objc func didSlideSlider(_ slider: UISlider){
+        let value = slider.value
+        delegate?.PlayerControlsView(self, didSlideSlider: value)
+    }
     
     @objc private func didTapBack(){
         delegate?.PlayerControlsViewDidTapBack(self)
@@ -150,6 +161,27 @@ final class PlayerControlsView: UIView {
     }
     
     @objc private func didTapPlayPause(){
+        self.isPlaying = !isPlaying
         delegate?.PlayerControlsViewDidTapPlayPause(self)
+        
+        //update icon
+        playPauseButton.setImage(isPlaying ? UIImage(
+            systemName: "pause", withConfiguration:
+                UIImage.SymbolConfiguration(
+                    pointSize: 34,
+                    weight: .regular
+                )
+        ) : UIImage(
+            systemName: "play.fill", withConfiguration:
+                UIImage.SymbolConfiguration(
+                    pointSize: 34,
+                    weight: .regular
+                )
+        ), for: .normal)
+    }
+    
+    func configure(with DTO: PlayerControlsViewDTO){
+        nameLabel.text = DTO.title
+        subtitleLabel.text = DTO.subTitile
     }
 }
